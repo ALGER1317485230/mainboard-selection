@@ -1,0 +1,15 @@
+# 缓存和数据
+v7/cache/
+v1/cache/
+output/
+*.pkl
+*.log
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+
+# 配置
+email_config.json
