@@ -23,7 +23,9 @@ jobs:
       - name: 安装依赖
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install numpy pandas
+          pip install akshare --no-cache-dir
+          pip list | grep -E "numpy|pandas|akshare"
       
       - name: 运行选股任务
         env:
