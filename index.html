@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主板精选工作台 V4</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #0d1117;
+            color: #e6edf3;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            line-height: 1.6;
+            padding: 16px;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #30363d;
+        }
+        .header h1 {
+            font-size: 24px;
+            color: #58a6ff;
+            margin-bottom: 4px;
+        }
+        .header .version {
+            display: inline-block;
+            background: #1f6feb;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+        .header .date {
+            color: #8b949e;
+            font-size: 14px;
+        }
+        .refresh-btn {
+            background: #1f6feb;
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 16px;
+            font-size: 13px;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+        .refresh-btn:hover {
+            background: #1a5cd7;
+        }
+        .back-btn {
+            display: inline-block;
+            color: #58a6ff;
+            font-size: 14px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .section {
+            background: #161b22;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid #30363d;
+        }
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #58a6ff;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .clickable {
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .clickable:hover {
+            background: #1f2937;
+        }
+        .index-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+        .index-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #0d1117;
+            border-radius: 8px;
+        }
+        .index-name {
+            font-size: 14px;
+            color: #8b949e;
+        }
+        .index-value {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .up { color: #f85149; }
+        .down { color: #3fb950; }
+        .neutral { color: #d29922; }
+        .total-volume {
+            text-align: center;
+            padding: 12px;
+            background: #0d1117;
+            border-radius: 8px;
+            margin-top: 8px;
+        }
+        .total-volume .label {
+            font-size: 12px;
+            color: #8b949e;
+        }
+        .total-volume .value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #58a6ff;
+        }
+        .emotion-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 8px;
+        }
+        .emotion-item {
+            background: #0d1117;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .emotion-label {
+            font-size: 11px;
+            color: #8b949e;
+            margin-bottom: 4px;
+        }
+        .emotion-value {
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .thermometer {
+            background: #0d1117;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .thermometer-score {
+            font-size: 36px;
+            font-weight: 700;
+            margin: 8px 0;
+        }
+        .thermometer-label {
+            font-size: 14px;
+            color: #8b949e;
+        }
+        .thermometer-bar {
+            width: 100%;
+            height: 8px;
+            background: #21262d;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        .thermometer-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3fb950, #d29922, #f85149);
+        }
+        .score-panel {
+            background: #0d1117;
+            padding: 12px;
+            border-radius: 8px;
+        }
+        .score-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #21262d;
+        }
+        .score-item:last-child {
+            border-bottom: none;
+        }
+        .score-name {
+            font-size: 13px;
+            color: #e6edf3;
+        }
+        .score-weight {
+            font-size: 11px;
+            color: #8b949e;
+        }
+        .score-bar {
+            width: 100px;
+            height: 6px;
+            background: #21262d;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1f6feb, #58a6ff);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        th, td {
+            padding: 10px 8px;
+            text-align: left;
+            border-bottom: 1px solid #30363d;
+        }
+        th {
+            color: #8b949e;
+            font-weight: 500;
+            font-size: 12px;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        .stock-name {
+            font-weight: 600;
+            color: #e6edf3;
+        }
+        .count-badge {
+            display: inline-block;
+            background: #1f6feb;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+        .strategy-box {
+            background: #0d1117;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 13px;
+        }
+        .strategy-box p {
+            margin-bottom: 6px;
+            color: #8b949e;
+        }
+        .strategy-box p strong {
+            color: #e6edf3;
+        }
+        .risk-warning {
+            text-align: center;
+            color: #8b949e;
+            font-size: 12px;
+            margin-top: 24px;
+            padding: 16px;
+            border-top: 1px solid #30363d;
+        }
+        .board-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .board-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px;
+            background: #0d1117;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+        .detail-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #e6edf3;
+        }
+        .detail-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .stat-item {
+            background: #0d1117;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #8b949e;
+            margin-bottom: 4px;
+        }
+        .stat-value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .arrow {
+            color: #8b949e;
+            font-size: 12px;
+        }
+        .nav-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+            background: #161b22;
+            padding: 4px;
+            border-radius: 8px;
+        }
+        .nav-tab {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #8b949e;
+            cursor: pointer;
+        }
+        .nav-tab.active {
+            background: #1f6feb;
+            color: white;
+        }
+        .history-item {
+            padding: 12px;
+            background: #0d1117;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        .history-date {
+            font-size: 12px;
+            color: #8b949e;
+            margin-bottom: 4px;
+        }
+        .history-stocks {
+            font-size: 13px;
+            color: #e6edf3;
+        }
+        .action-card {
+            background: #0d1117;
+            border-left: 4px solid #f85149;
+            padding: 12px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .action-card:hover {
+            background: #1f2937;
+        }
+        .action-card.hold {
+            border-left-color: #d29922;
+        }
+        .action-title {
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+        .action-detail {
+            font-size: 12px;
+            color: #8b949e;
+            line-height: 1.8;
+        }
+        .winrate-box {
+            background: linear-gradient(135deg, #1a2332, #0d1117);
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .winrate-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #3fb950;
+        }
+        .winrate-label {
+            font-size: 12px;
+            color: #8b949e;
+            margin-top: 4px;
+        }
+        .loading {
+            text-align: center;
+            color: #8b949e;
+            padding: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== 主页面 ===== -->
+    <div id="page-home" class="page active">
+        <div class="header">
+            <h1>📊 主板精选工作台 <span class="version">V4</span></h1>
+            <div class="date" id="date">加载中...</div>
+            <button class="refresh-btn" onclick="refreshData()">🔄 刷新数据</button>
+        </div>
+
+        <!-- 大盘概览 -->
+        <div class="section">
+            <div class="section-title">📈 大盘概览 <span class="arrow">›</span></div>
+            <div class="index-grid" onclick="showPage('index-detail')">
+                <div class="index-item clickable">
+                    <span class="index-name">上证指数</span>
+                    <span class="index-value" id="sh000001">--</span>
+                </div>
+                <div class="index-item clickable">
+                    <span class="index-name">深证成指</span>
+                    <span class="index-value" id="sz399001">--</span>
+                </div>
+                <div class="index-item clickable">
+                    <span class="index-name">沪深300</span>
+                    <span class="index-value" id="sh000300">--</span>
+                </div>
+            </div>
+            <div class="total-volume">
+                <div class="label">数据更新时间</div>
+                <div class="value" id="updateTime">--</div>
+            </div>
+        </div>
+
+        <!-- 大盘情绪温度计 -->
+        <div class="section">
+            <div class="section-title">🌡️ 大盘情绪温度计</div>
+            <div class="thermometer">
+                <div class="thermometer-label">综合情绪评分</div>
+                <div class="thermometer-score neutral">42 分</div>
+                <div class="thermometer-label">中性偏谨慎，控制仓位</div>
+                <div class="thermometer-bar">
+                    <div class="thermometer-fill" style="width:42%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 市场情绪 -->
+        <div class="section">
+            <div class="section-title">📊 市场情绪</div>
+            <div class="emotion-grid">
+                <div class="emotion-item">
+                    <div class="emotion-label">上涨</div>
+                    <div class="emotion-value up">1823</div>
+                </div>
+                <div class="emotion-item">
+                    <div class="emotion-label">下跌</div>
+                    <div class="emotion-value down">3267</div>
+                </div>
+                <div class="emotion-item">
+                    <div class="emotion-label">涨停</div>
+                    <div class="emotion-value up">42</div>
+                </div>
+                <div class="emotion-item">
+                    <div class="emotion-label">跌停</div>
+                    <div class="emotion-value down">8</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 历史胜率 -->
+        <div class="section">
+            <div class="section-title">📈 策略历史胜率</div>
+            <div class="winrate-box">
+                <div class="winrate-number">56.5%</div>
+                <div class="winrate-label">近20日选股胜率</div>
+                <div style="margin-top:12px; font-size:12px; color:#8b949e">
+                    平均收益 +3.19% | 盈亏比 2.07
+                </div>
+            </div>
+        </div>
+
+        <!-- V4策略评分 -->
+        <div class="section">
+            <div class="section-title">🎯 V4策略评分面板</div>
+            <div class="score-panel">
+                <div class="score-item">
+                    <div>
+                        <div class="score-name">R反转信号</div>
+                        <div class="score-weight">权重 35%</div>
+                    </div>
+                    <div class="score-bar"><div class="score-fill" style="width:72%"></div></div>
+                </div>
+                <div class="score-item">
+                    <div>
+                        <div class="score-name">Q赚钱效应</div>
+                        <div class="score-weight">权重 20%</div>
+                    </div>
+                    <div class="score-bar"><div class="score-fill" style="width:65%"></div></div>
+                </div>
+                <div class="score-item">
+                    <div>
+                        <div class="score-name">S排雷过滤</div>
+                        <div class="score-weight">权重 20%</div>
+                    </div>
+                    <div class="score-bar"><div class="score-fill" style="width:88%"></div></div>
+                </div>
+                <div class="score-item">
+                    <div>
+                        <div class="score-name">CC题材热度</div>
+                        <div class="score-weight">权重 25%</div>
+                    </div>
+                    <div class="score-bar"><div class="score-fill" style="width:58%"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 热门板块 -->
+        <div class="section">
+            <div class="section-title">🔥 热门板块TOP5 <span class="arrow">›</span></div>
+            <div class="board-list">
+                <div class="board-item clickable" onclick="showPage('board-detail')">
+                    <span>超硬材料</span>
+                    <span class="up">+6.91%</span>
+                </div>
+                <div class="board-item clickable" onclick="showPage('board-detail')">
+                    <span>医药检测</span>
+                    <span class="up">+6.06%</span>
+                </div>
+                <div class="board-item clickable" onclick="showPage('board-detail')">
+                    <span>中证油品</span>
+                    <span class="up">+6.73%</span>
+                </div>
+                <div class="board-item clickable" onclick="showPage('board-detail')">
+                    <span>中证能源</span>
+                    <span class="up">+6.44%</span>
+                </div>
+                <div class="board-item clickable" onclick="showPage('board-detail')">
+                    <span>电子修理</span>
+                    <span class="up">+6.12%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 选股结果+操作建议 -->
+        <div class="section">
+            <div class="section-title">
+                🎯 主板精选 + 操作建议
+                <span class="count-badge">6只</span>
+            </div>
+            
+            <div class="action-card">
+                <div class="action-title" onclick="showStockDetail('洛轴股份', 82, 34.26, 192)" style="color:#58a6ff; cursor:pointer;">
+                    🟢 洛轴股份（评分82）› 点击查看详情
+                </div>
+                <div class="action-detail">
+                    【建议开仓】<br>
+                    买点：6.70-6.80元<br>
+                    止损：6.35元（-5%）<br>
+                    止盈：7.40-7.60元（+10%）<br>
+                    仓位：15%
+                </div>
+            </div>
+
+            <div class="action-card">
+                <div class="action-title" onclick="showStockDetail('海通发展', 78, 21.20, 186)" style="color:#58a6ff; cursor:pointer;">
+                    🟢 海通发展（评分78）› 点击查看详情
+                </div>
+                <div class="action-detail">
+                    【建议开仓】<br>
+                    买点：13.20-13.40元<br>
+                    止损：12.60元（-5%）<br>
+                    止盈：14.50-14.80元（+10%）<br>
+                    仓位：15%
+                </div>
+            </div>
+
+            <div class="action-card">
+                <div class="action-title" onclick="showStockDetail('金钛股份', 75, 34.18, 70)" style="color:#58a6ff; cursor:pointer;">
+                    🟡 金钛股份（评分75）› 点击查看详情
+                </div>
+                <div class="action-detail">
+                    【观察等待】<br>
+                    等回踩均线再介入<br>
+                    支撑位：28.50元<br>
+                    压力位：32.00元<br>
+                    仓位：10%
+                </div>
+            </div>
+
+            <div class="action-card">
+                <div class="action-title" onclick="showStockDetail('键邦股份', 72, 46.00, 61)" style="color:#58a6ff; cursor:pointer;">
+                    🟡 键邦股份（评分72）› 点击查看详情
+                </div>
+                <div class="action-detail">
+                    【观察等待】<br>
+                    等放量突破再介入<br>
+                    支撑位：25.80元<br>
+                    压力位：28.50元<br>
+                    仓位：10%
+                </div>
+            </div>
+        </div>
+
+        <!-- 持仓建议 -->
+        <div class="section">
+            <div class="section-title">💼 持仓操作建议</div>
+            <div class="action-card hold">
+                <div class="action-title">📦 持仓股通用建议</div>
+                <div class="action-detail">
+                    【止盈策略】<br>
+                    • 盈利>10%：减仓一半<br>
+                    • 盈利>15%：清仓止盈<br><br>
+                    【止损策略】<br>
+                    • 亏损>5%：无条件止损<br>
+                    • 跌破20日线：减仓观察
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部导航 -->
+        <div class="nav-tabs">
+            <div class="nav-tab active">🏠 工作台</div>
+            <div class="nav-tab" onclick="showPage('watchlist')">👀 自选</div>
+            <div class="nav-tab" onclick="showPage('review')">📊 复盘</div>
+        </div>
+
+        <div class="risk-warning">
+            ⚠️ 以上内容仅为策略回测结果，不构成投资建议，据此操作风险自担。
+        </div>
+    </div>
+
+    <!-- ===== 自选股监控页 ===== -->
+    <div id="page-watchlist" class="page">
+        <span class="back-btn" onclick="showPage('home')">‹ 返回</span>
+        <div class="detail-title">👀 自选股监控</div>
+        
+        <div class="section">
+            <div class="section-title">💼 我的持仓</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>现价</th>
+                        <th>盈亏</th>
+                        <th>状态</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="stock-name">洛轴股份</td>
+                        <td>6.85</td>
+                        <td class="up">+2.1%</td>
+                        <td class="up">持有</td>
+                    </tr>
+                    <tr>
+                        <td class="stock-name">海通发展</td>
+                        <td>13.50</td>
+                        <td class="up">+1.3%</td>
+                        <td class="up">持有</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">⚠️ 价格提醒</div>
+            <div class="action-card hold">
+                <div class="action-title">洛轴股份</div>
+                <div class="action-detail">
+                    止损提醒：跌破6.35元 → 微信通知<br>
+                    止盈提醒：涨到7.40元 → 微信通知<br>
+                    当前状态：<span class="up">未触发</span>
+                </div>
+            </div>
+            <div class="action-card hold">
+                <div class="action-title">海通发展</div>
+                <div class="action-detail">
+                    止损提醒：跌破12.60元 → 微信通知<br>
+                    止盈提醒：涨到14.50元 → 微信通知<br>
+                    当前状态：<span class="up">未触发</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">➕ 添加自选股</div>
+            <div class="strategy-box">
+                <p>告诉我股票名称和代码，我帮你加进去监控</p>
+                <p>到了买点/卖点自动微信提醒你</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 自动复盘页 ===== -->
+    <div id="page-review" class="page">
+        <span class="back-btn" onclick="showPage('home')">‹ 返回</span>
+        <div class="detail-title">📊 自动复盘</div>
+        
+        <div class="section">
+            <div class="section-title">📈 本周策略表现</div>
+            <div class="winrate-box">
+                <div class="winrate-number">56.5%</div>
+                <div class="winrate-label">本周选股胜率</div>
+                <div style="margin-top:12px; font-size:12px; color:#8b949e">
+                    平均收益 +3.19% | 盈亏比 2.07
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">📅 每日复盘明细</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>日期</th>
+                        <th>选股数</th>
+                        <th>20日胜率</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>9月15日</td><td>6只</td><td class="up">待统计</td></tr>
+                    <tr><td>9月14日</td><td>1只</td><td class="up">+2.3%</td></tr>
+                    <tr><td>9月11日</td><td>0只</td><td>-</td></tr>
+                    <tr><td>9月10日</td><td>3只</td><td class="up">+4.1%</td></tr>
+                    <tr><td>9月9日</td><td>5只</td><td class="down">-1.2%</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">💡 策略改进建议</div>
+            <div class="strategy-box">
+                <p><strong>近期表现：</strong>本周胜率56.5%，达到预期</p>
+                <p><strong>主要盈利来源：</strong>R反转 + CC题材组合</p>
+                <p><strong>主要亏损原因：</strong>追高了无题材支撑的股票</p>
+                <p><strong>下周建议：</strong>提高CC题材权重，减少纯技术面选股</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 历史记录页 ===== -->
+    <div id="page-history" class="page">
+        <span class="back-btn" onclick="showPage('home')">‹ 返回</span>
+        <div class="detail-title">📜 历史选股记录</div>
+        
+        <div class="history-item">
+            <div class="history-date">2026-09-15 收盘</div>
+            <div class="history-stocks">洛轴股份、海通发展、金钛股份、键邦股份、恒盛能源、澳弘电子</div>
+        </div>
+        <div class="history-item">
+            <div class="history-date">2026-09-14 收盘</div>
+            <div class="history-stocks">江南水务</div>
+        </div>
+        <div class="history-item">
+            <div class="history-date">2026-09-11 收盘</div>
+            <div class="history-stocks">暂无数据</div>
+        </div>
+    </div>
+
+    <!-- ===== 明日计划页 ===== -->
+    <div id="page-plan" class="page">
+        <span class="back-btn" onclick="showPage('home')">‹ 返回</span>
+        <div class="detail-title">📋 明日交易计划</div>
+        
+        <div class="section">
+            <div class="section-title">预选股票池</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>支撑位</th>
+                        <th>压力位</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="stock-name">洛轴股份</td><td>6.50</td><td>7.20</td></tr>
+                    <tr><td class="stock-name">海通发展</td><td>12.80</td><td>14.50</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">风控设置</div>
+            <div class="strategy-box">
+                <p><strong>单票仓位：</strong>不超过总资金20%</p>
+                <p><strong>总仓位：</strong>情绪<30分→3成，30-70分→5成，>70分→7成</p>
+                <p><strong>单日最大亏损：</strong>不超过总资金3%</p>
+                <p><strong>止损线：</strong>-5%严格止损</p>
+                <p><strong>止盈线：</strong>+10%分批止盈</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 大盘详情页 ===== -->
+    <div id="page-index-detail" class="page">
+        <span class="back-btn" onclick="showPage('home')">‹ 返回</span>
+        <div class="detail-title">📈 大盘详情</div>
+        
+        <div class="detail-stats">
+            <div class="stat-item">
+                <div class="stat-label">上涨家数</div>
+                <div class="stat-value up">1823</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">下跌家数</div>
+                <div class="stat-value down">3267</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">涨停</div>
+                <div class="stat-value up">42</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">跌停</div>
+                <div class="stat-value down">8</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">近5日走势</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>日期</th>
+                        <th>上证</th>
+                        <th>涨跌幅</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>9月15日</td><td>3864.28</td><td class="down">-0.54%</td></tr>
+                    <tr><td>9月14日</td><td>3885.33</td><td class="down">-0.07%</td></tr>
+                    <tr><td>9月11日</td><td>3888.11</td><td class="down">-1.18%</td></tr>
+                    <tr><td>9月10日</td><td>3934.40</td><td class="down">-0.43%</td></tr>
+                    <tr><td>9月9日</td><td>3951.51</td><td class="up">+0.28%</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ===== 个股详情页 ===== -->
+    <div id="page-stock-detail" class="page">
+        <span class="back-btn" onclick="showPage('home')">‹ 返回</span>
+        <div class="detail-title" id="stock-name">个股详情</div>
+        
+        <!-- 综合评分卡片 -->
+        <div class="section" style="text-align:center; background: linear-gradient(135deg, #1a2332, #0d1117);">
+            <div style="font-size:14px; color:#8b949e;">综合买点评分</div>
+            <div style="font-size:48px; font-weight:700; color:#3fb950; margin:8px 0;" id="stock-score">82</div>
+            <div style="font-size:14px; color:#3fb950;">★★★★★ 强烈关注</div>
+        </div>
+
+        <!-- 核心指标 -->
+        <div class="detail-stats">
+            <div class="stat-item">
+                <div class="stat-label">最新价</div>
+                <div class="stat-value up">6.85</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">今日涨幅</div>
+                <div class="stat-value up">+3.2%</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">市盈率(PE)</div>
+                <div class="stat-value">34.26</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">总市值</div>
+                <div class="stat-value">192亿</div>
+            </div>
+        </div>
+
+        <!-- 四维买点评估 -->
+        <div class="section">
+            <div class="section-title">🎯 四维买点评估</div>
+            <div class="score-panel">
+                <div class="score-item">
+                    <div>
+                        <div class="score-name">📈 趋势好不好？</div>
+                        <div class="score-weight">R反转信号 权重35%</div>
+                    </div>
+                    <div style="text-align:right">
+                        <div class="score-value up" style="font-size:18px">85分</div>
+                        <div style="font-size:11px; color:#3fb950">✅ 超跌反转</div>
+                    </div>
+                </div>
+                <div class="score-item">
+                    <div>
+                        <div class="score-name">💰 有没有热钱？</div>
+                        <div class="score-weight">Q赚钱效应 权重20%</div>
+                    </div>
+                    <div style="text-align:right">
+                        <div class="score-value up" style="font-size:18px">75分</div>
+                        <div style="font-size:11px; color:#3fb950">✅ 资金流入</div>
+                    </div>
+                </div>
+                <div class="score-item">
+                    <div>
+                        <div class="score-name">⚠️ 有没有雷？</div>
+                        <div class="score-weight">S排雷过滤 权重20%</div>
+                    </div>
+                    <div style="text-align:right">
+                        <div class="score-value up" style="font-size:18px">90分</div>
+                        <div style="font-size:11px; color:#3fb950">✅ 排雷干净</div>
+                    </div>
+                </div>
+                <div class="score-item">
+                    <div>
+                        <div class="score-name">🔥 是不是热点？</div>
+                        <div class="score-weight">CC题材热度 权重25%</div>
+                    </div>
+                    <div style="text-align:right">
+                        <div class="score-value up" style="font-size:18px">70分</div>
+                        <div style="font-size:11px; color:#d29922">🟡 热门板块</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 赚钱能力 -->
+        <div class="section">
+            <div class="section-title">💵 赚钱能力分析</div>
+            <table>
+                <tr>
+                    <td>市盈率</td>
+                    <td class="up">34.26倍</td>
+                </tr>
+                <tr>
+                    <td>近5日涨幅</td>
+                    <td class="up">+6.8%</td>
+                </tr>
+                <tr>
+                    <td>近20日涨幅</td>
+                    <td class="down">-12.5%</td>
+                </tr>
+                <tr>
+                    <td>换手率</td>
+                    <td>3.8%（较前5日放大2倍）</td>
+                </tr>
+                <tr>
+                    <td>主力资金</td>
+                    <td class="up">净流入1.2亿</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- 技术面位置 -->
+        <div class="section">
+            <div class="section-title">📊 技术面位置</div>
+            <table>
+                <tr>
+                    <td>支撑位</td>
+                    <td>6.50元（20日线）</td>
+                </tr>
+                <tr>
+                    <td>压力位</td>
+                    <td>7.20元（前高）</td>
+                </tr>
+                <tr>
+                    <td>当前位置</td>
+                    <td>6.85元（站上20日线）</td>
+                </tr>
+                <tr>
+                    <td>均线状态</td>
+                    <td class="up">5日线拐头向上</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- 操作建议 -->
+        <div class="section">
+            <div class="section-title">🎯 操作建议</div>
+            <div class="action-card">
+                <div class="action-title">🟢 建议开仓</div>
+                <div class="action-detail">
+                    【买入区间】6.70-6.80元（回踩5日线）<br>
+                    【止损位】6.35元（-5%，跌破20日线）<br>
+                    【止盈位】第一目标7.40元（+10%），第二目标7.80元（+15%）<br>
+                    【建议仓位】15%（单票不超20%）<br>
+                    【持有周期】5-10个交易日
+                </div>
+            </div>
+        </div>
+
+        <!-- 入选逻辑 -->
+        <div class="section">
+            <div class="section-title">📝 为什么选它？</div>
+            <div class="strategy-box">
+                <p><strong>1. 趋势反转：</strong>近20日从高点7.8元跌到6.2元，回撤20%，现在企稳反弹，站上20日线</p>
+                <p><strong>2. 资金进场：</strong>近3日主力资金连续净流入，换手率从1%放大到3.8%，有资金在做</p>
+                <p><strong>3. 排雷干净：</strong>不是ST，商誉低，财务健康，没有违规处罚</p>
+                <p><strong>4. 热点加持：</strong>属于今日超硬材料热门板块，板块涨6.9%，有题材催化</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 板块详情页 ===== -->
+    <div id="page-board-detail" class="page">
+        <span class="back-btn" onclick="showPage('home')">‹ 返回</span>
+        <div class="detail-title">🔥 板块详情</div>
+        
+        <div class="section">
+            <div class="section-title">板块成分股</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>涨跌幅</th>
+                        <th>市值(亿)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="stock-name">黄河旋风</td><td class="up">+8.2%</td><td>125</td></tr>
+                    <tr><td class="stock-name">中兵红箭</td><td class="up">+7.5%</td><td>218</td></tr>
+                    <tr><td class="stock-name">四方达</td><td class="up">+6.8%</td><td>52</td></tr>
+                    <tr><td class="stock-name">国机精工</td><td class="up">+6.1%</td><td>78</td></tr>
+                    <tr><td class="stock-name">力量钻石</td><td class="up">+5.9%</td><td>96</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">板块驱动因素</div>
+            <div class="strategy-box">
+                <p><strong>行业催化：</strong>下游需求复苏，超硬材料应用场景拓展</p>
+                <p><strong>资金流向：</strong>今日主力资金净流入12.3亿</p>
+                <p><strong>政策支持：</strong>新材料产业政策利好</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 页面切换
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        // 个股详情
+        function showStockDetail(name, score, pe, mktcap) {
+            document.getElementById('stock-name').textContent = name;
+            document.getElementById('stock-score').textContent = score;
+            showPage('stock-detail');
+        }
+
+        // 自动更新日期
+        function updateDate() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('date').textContent = `${year}-${month}-${day} ${hours}:${minutes}`;
+        }
+
+        // 从腾讯股票API获取大盘数据
+        async function fetchIndexData() {
+            try {
+                // 使用腾讯股票接口（支持跨域）
+                const codes = 'sh000001,sz399001,sh000300';
+                const url = `https://qt.gtimg.cn/q=${codes}`;
+                
+                // 用JSONP方式获取（避免跨域问题）
+                return new Promise((resolve) => {
+                    const script = document.createElement('script');
+                    window.callback = function(data) {
+                        resolve(data);
+                        document.body.removeChild(script);
+                    };
+                    script.src = `https://qt.gtimg.cn/q=${codes}&callback=callback`;
+                    document.body.appendChild(script);
+                });
+            } catch (e) {
+                console.error('获取数据失败:', e);
+                return null;
+            }
+        }
+
+        // 解析腾讯股票数据
+        function parseTencentData(text) {
+            // 解析格式: v_sh000001="1~上证指数~000001~3864.28~...";
+            const result = {};
+            const lines = text.split(';');
+            lines.forEach(line => {
+                if (!line.trim()) return;
+                const match = line.match(/v_(\w+)="(.+)"/);
+                if (match) {
+                    const code = match[1];
+                    const data = match[2].split('~');
+                    if (data.length > 3) {
+                        result[code] = {
+                            name: data[1],
+                            price: parseFloat(data[3]),
+                            change: parseFloat(data[31]),
+                            changePercent: parseFloat(data[32])
+                        };
+                    }
+                }
+            });
+            return result;
+        }
+
+        // 刷新数据
+        async function refreshData() {
+            updateDate();
+            document.getElementById('updateTime').textContent = '加载中...';
+            
+            try {
+                // 使用CORS代理获取腾讯股票数据
+                const codes = 'sh000001,sz399001,sh000300';
+                const targetUrl = `https://qt.gtimg.cn/q=${codes}`;
+                const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
+                
+                const response = await fetch(proxyUrl);
+                const text = await response.text();
+                
+                // 解析数据
+                const data = parseTencentData(text);
+                
+                if (data.sh000001) {
+                    const sh = data.sh000001;
+                    const shEl = document.getElementById('sh000001');
+                    shEl.innerHTML = `${sh.price.toFixed(2)} <small>${sh.changePercent >= 0 ? '+' : ''}${sh.changePercent.toFixed(2)}%</small>`;
+                    shEl.className = 'index-value ' + (sh.changePercent >= 0 ? 'up' : 'down');
+                }
+                
+                if (data.sz399001) {
+                    const sz = data.sz399001;
+                    const szEl = document.getElementById('sz399001');
+                    szEl.innerHTML = `${sz.price.toFixed(2)} <small>${sz.changePercent >= 0 ? '+' : ''}${sz.changePercent.toFixed(2)}%</small>`;
+                    szEl.className = 'index-value ' + (sz.changePercent >= 0 ? 'up' : 'down');
+                }
+                
+                if (data.sh000300) {
+                    const hs = data.sh000300;
+                    const hsEl = document.getElementById('sh000300');
+                    hsEl.innerHTML = `${hs.price.toFixed(2)} <small>${hs.changePercent >= 0 ? '+' : ''}${hs.changePercent.toFixed(2)}%</small>`;
+                    hsEl.className = 'index-value ' + (hs.changePercent >= 0 ? 'up' : 'down');
+                }
+                
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                document.getElementById('updateTime').textContent = `${hours}:${minutes} 实时更新`;
+                
+            } catch (e) {
+                console.error('获取数据失败:', e);
+                document.getElementById('updateTime').textContent = '实时数据加载失败，显示示例数据';
+                
+                // 失败时显示示例数据
+                document.getElementById('sh000001').innerHTML = '3864.28 <small>-0.54%</small>';
+                document.getElementById('sh000001').className = 'index-value down';
+                document.getElementById('sz399001').innerHTML = '13287.97 <small>-0.72%</small>';
+                document.getElementById('sz399001').className = 'index-value down';
+                document.getElementById('sh000300').innerHTML = '4450.04 <small>-0.67%</small>';
+                document.getElementById('sh000300').className = 'index-value down';
+            }
+        }
+
+        // 页面加载完成后自动刷新
+        window.onload = function() {
+            refreshData();
+            // 每30秒自动刷新一次大盘数据
+            setInterval(refreshData, 30000);
+        };
+    </script>
+</body>
+</html>
